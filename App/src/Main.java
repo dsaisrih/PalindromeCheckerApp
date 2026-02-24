@@ -2,21 +2,21 @@ import java.util.Scanner;
 
 /**
  * ============================================================
- * MAIN CLASS - UseCase12PalindromeCheckerApp
+ * MAIN CLASS - UseCase13PalindromeCheckerApp
  * ============================================================
- * Use Case 12: Strategy Pattern for Palindrome Algorithms
+ * Use Case 13: Performance Comparison
  *
  * Description:
- * Demonstrates how different palindrome validation algorithms
- * can be selected dynamically at runtime using the Strategy Pattern.
+ * This class measures and compares the execution
+ * performance of a palindrome validation algorithm.
  *
  * The application:
- * - Defines a common PalindromeStrategy interface
- * - Implements a concrete StackStrategy
- * - Injects the strategy at runtime
- * - Executes the selected algorithm
+ * - Uses a palindrome strategy implementation
+ * - Captures execution start and end time
+ * - Calculates total execution duration
+ * - Displays benchmarking results
  *
- * Focus: Algorithm interchangeability
+ * Focus: Performance measurement & benchmarking
  *
  * @author D SAI SRI HARSHIT
  * @version 1.0
@@ -32,42 +32,40 @@ public class Main {
         System.out.print("Input : ");
         String input = scanner.nextLine();
 
-        // Inject strategy at runtime
-        PalindromeStrategy strategy = new StackStrategy();
+        // Create strategy instance
+        PalindromeStrategy strategy = new TwoPointerStrategy();
 
+        // Start time
+        long startTime = System.nanoTime();
+
+        // Execute algorithm
         boolean result = strategy.check(input);
 
+        // End time
+        long endTime = System.nanoTime();
+
+        // Calculate execution time
+        long duration = endTime - startTime;
+
         System.out.println("Is Palindrome? : " + result);
+        System.out.println("Execution Time : " + duration + " ns");
 
         scanner.close();
     }
 }
 
 /**
- * ============================================================
- * INTERFACE - PalindromeStrategy
- * ============================================================
- * Defines a contract for all palindrome checking algorithms.
+ * Strategy Interface
  */
 interface PalindromeStrategy {
-
     boolean check(String input);
 }
 
 /**
- * ============================================================
- * CLASS - StackStrategy
- * ============================================================
- * Implements palindrome validation using Stack (LIFO).
+ * Two Pointer Implementation
  */
-class StackStrategy implements PalindromeStrategy {
+class TwoPointerStrategy implements PalindromeStrategy {
 
-    /**
-     * Implements palindrome validation using Stack.
-     *
-     * @param input String to validate
-     * @return true if palindrome, false otherwise
-     */
     @Override
     public boolean check(String input) {
 
@@ -75,21 +73,17 @@ class StackStrategy implements PalindromeStrategy {
             return false;
         }
 
-        // Create a stack to store characters
-        java.util.Stack<Character> stack = new java.util.Stack<>();
+        int start = 0;
+        int end = input.length() - 1;
 
-        // Push each character onto the stack
-        for (char c : input.toCharArray()) {
-            stack.push(c);
-        }
-
-        // Compare characters by popping from the stack
-        for (char c : input.toCharArray()) {
-            if (c != stack.pop()) {
+        while (start <= end) {
+            if (input.charAt(start) != input.charAt(end)) {
                 return false;
             }
+            start++;
+            end--;
         }
 
         return true;
     }
-}S
+}
