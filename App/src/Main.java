@@ -22,7 +22,7 @@
  * @version 9.0
  */
 
-public class UseCase9PalindromeCheckerApp {
+public class Main {
 
     /**
      * Application entry point for UC9.
